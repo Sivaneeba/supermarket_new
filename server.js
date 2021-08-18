@@ -21,10 +21,12 @@ app.use(express.static('uploads'));
 const db = require("./app/models");
 const Role = db.role;
 
-db.sequelize.sync({ force: true }).then(() => {
-    console.log("Drop and re-sync db.");
-    initial();
-});
+db.sequelize.sync(
+//   { force: true }).then(() => {
+//     console.log("Drop and re-sync db.");
+//     initial();
+// }
+);
 
 function initial() {
     Role.create({
