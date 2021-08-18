@@ -21,6 +21,9 @@ db.sequelize = sequelize;
 
 db.productCategories = require("./productCategory.model.js")(sequelize, Sequelize);
 db.products = require("./product.model.js")(sequelize, Sequelize);
+db.carts = require("./cart.model.js")(sequelize, Sequelize);
+db.orders = require("./order.model.js")(sequelize, Sequelize);
+db.orderItems = require("./order-item.model.js")(sequelize, Sequelize);
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
 
@@ -29,6 +32,22 @@ db.productCategories.hasMany(db.products, { as: "products" });
 db.products.belongsTo(db.productCategories, {
   foreignKey: "productCategoryId",
   as: "productCategory",
+});
+
+db.user.hasMany(db.carts);
+db.carts.belongsTo(db.user);
+
+db.products.hasMany(db.carts);
+db.carts.belongsTo(db.products);
+
+db.orders.belongsTo(db.user);
+db.user.hasMany(db.orders);
+
+db.orders.belongsToMany(db.products,{
+  through: db.orderItems
+});
+db.products.belongsToMany(db.orders,{
+  through: db.orderItems
 });
 
 db.role.belongsToMany(db.user, {
