@@ -1,5 +1,6 @@
 const db = require("../models");
 const Product = db.products;
+const Cart = db.carts;
 const Op = db.Sequelize.Op;
 const fs = require("fs");
 
@@ -21,7 +22,7 @@ exports.create = (req, res) => {
     price: req.body.price,
     count: req.body.count, 
     image: req.file.filename,     
-    productCategoryId: req.body.productCategoryId
+    productCategoryId: req.body.productCategoryId    
   };
 
   // Save Product in the database
@@ -179,3 +180,4 @@ exports.findProductsAndCategories = (req, res) => {
       });
     });
 };  
+
