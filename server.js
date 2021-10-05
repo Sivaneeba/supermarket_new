@@ -33,7 +33,7 @@ app.use((req, resp, next) => {
       .catch(err => console.error(err));
 });
 
-db.sequelize.sync({ force: true }).then(() => { // drop existing tables and re-sync database
+db.sequelize.sync().then(() => { // drop existing tables and re-sync database
     console.log("Drop and re-sync db.");
     initial();
 });
