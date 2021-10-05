@@ -1,12 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const passport = require("./app/middleware/passport");
 global.__basedir = __dirname;
 const db = require("./app/models");
-const { user } = require("./app/models");
 const Role = db.role;
-const User = db.user;
 
 const app = express();
 
@@ -24,16 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static('uploads'));
 
-app.use((req, resp, next) => {
-  User.findByPk(1)
-      .then(user => {
-          req.user = user;
-          next();
-      })
-      .catch(err => console.error(err));
-});
-
-db.sequelize.sync().then(() => { // drop existing tables and re-sync database
+db.sequelize.sync({ force: true }).then(() => { // drop existing tables and re-sync database
     console.log("Drop and re-sync db.");
     initial();
 });

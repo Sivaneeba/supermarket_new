@@ -1,9 +1,7 @@
 module.exports = app => {
     const carts = require("../controllers/cart.controller.js");
   
-    var router = require("express").Router();
-
-    router.get("/products", carts.getProducts); 
+    var router = require("express").Router();   
     
     // Retrieve all Carts
     router.get("/:id", carts.findAll); 

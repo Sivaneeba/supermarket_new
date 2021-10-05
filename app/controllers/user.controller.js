@@ -9,8 +9,7 @@ exports.allAccess = (req, res) => {
   
   exports.userBoard = (req, res) => {
     res.status(200).send("User Content.");
-  };
-   
+  }; 
 
 
   // Find all Users and Roles

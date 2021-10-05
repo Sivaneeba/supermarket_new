@@ -1,21 +1,5 @@
-const e = require("express");
 const db = require("../models");
 const Cart = db.carts;
-const Product = db.products;
-
-exports.getProducts = (req, res) => {   
-
-    Product.findAll()
-        .then(data => {
-            res.send(data);
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while retrieving products."
-            });
-        });
-};
 
 exports.findAll = (req, res) => {
     const id = req.params.id;

@@ -1,11 +1,23 @@
 const db = require("../models");
 const Product = db.products;
-const Cart = db.carts;
 const Op = db.Sequelize.Op;
-const fs = require("fs");
+
+const getPagination = (page, size) => {
+  const limit = size ? +size : 3;
+  const offset = page ? page * limit : 0;
+
+  return { limit, offset };
+};
+
+const getPagingData = (data, page, limit) => {
+  const { count: totalItems, rows: products } = data;
+  const currentPage = page ? +page : 0;
+  const totalPages = Math.ceil(totalItems / limit);
+
+  return { totalItems, products, totalPages, currentPage };
+};
 
 //Create and Save a new Product
-
 exports.create = (req, res) => {
   // Validate request
   if (!req.body.name) {
@@ -41,13 +53,17 @@ exports.create = (req, res) => {
 // Retrieve all Products/ find by name from database
 
 exports.findAll = (req, res) => {
-
-    const name = req.query.name;
+  
+    const { page, size, name} = req.query;
+  //const name = req.query.name;
     var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
 
-    Product.findAll({ where: condition })
+    const { limit, offset } = getPagination(page, size);
+
+    Product.findAndCountAll({ where: condition, limit, offset })
         .then(data => {
-            res.send(data);
+          const response = getPagingData(data, page, limit);
+          res.send(response);
         })
         .catch(err => {
             res.status(500).send({
